@@ -1,0 +1,16 @@
+.link {
+    fill: none;
+    stroke: #aaa;
+    stroke-width: 1;
+    stroke-dasharray: 9 1;
+    stroke-dashoffset: 1;
+  }
+
+.node {
+    
+    fill: #aaa;
+}
+
+.node_text {
+    stroke: black;
+}
