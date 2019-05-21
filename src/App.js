@@ -25,18 +25,8 @@ export default class App extends Component {
         optimizer: "adam",
         loss: "sigmoidCrossEntropy",
         metrics: "accuracy",
-        layersCount: 3,
+        layersCount: 1,
         layers: [
-          {
-            type: 'dense',
-            units: 7,
-            activation: 'sigmoid'
-          },
-          {
-            type: 'dense',
-            units: 3,
-            activation: 'sigmoid'
-          },
           {
             type: 'dense',
             units: 1,
