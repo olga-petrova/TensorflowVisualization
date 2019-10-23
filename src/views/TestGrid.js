@@ -8,12 +8,13 @@ export default class TestGrid extends BaseGrid {
 
   constructor(props) {
     super(props);
-
+    this.columnWidth = props.columnWidth;
     this.onPredictAll = this.onPredictAll.bind(this);
     this.getResults = this.getResults.bind(this);
   }
 
   componentWillReceiveProps(props) {
+    this.columnWidth = props.columnWidth;
     this.update(props.tensors[1], props.fields, props.meta);
   }
 
@@ -79,12 +80,12 @@ export default class TestGrid extends BaseGrid {
         dataIndex: fields[index],
         hidden: (Ext.isEmpty(metaItem)),
         hideable: (index == (fields.length - 1)) ? false: true,
-        width: 280
+        width: this.columnWidth
       });
     }
     columns.push({
       dataIndex: 'predict',
-      width: 200,
+      width: this.columnWidth,
       cell: {
         xtype: 'widgetcell',
         widget: {
@@ -114,7 +115,7 @@ export default class TestGrid extends BaseGrid {
               viewModel: {}
             }}
             flex="1"
-            border="1" 
+            border="1"
             ref={grid => this.grid = grid}
             >
         </Grid>

@@ -11,14 +11,18 @@ export default class Visualization extends Component {
     super(props);
     this.state = {};
     this.isRendered = false;
-    this.width = 2200;
-    this.height = 700;
+    this.width = props.width;
+    this.height = props.height;
     this.nodeSize = 50;
     this.biasSize = 10;
 
     this.container = React.createRef();
 
     this.showTooltip = this.showTooltip.bind(this);
+  }
+
+  setWidth (width) {
+    this.width = width;
   }
 
 
@@ -323,17 +327,17 @@ export default class Visualization extends Component {
         this.isRendered = true;
     } 
     this.generateNodesData(graph);
-        this.removeLinks(graph);
-        this.createLinks(graph);
-        this.updateLinks(graph);
-        this.removeNodes(graph);
-        this.createNodes(graph);
-        this.updateNodes(graph);
+    this.removeLinks(graph);
+    this.createLinks(graph);
+    this.updateLinks(graph);
+    this.removeNodes(graph);
+    this.createNodes(graph);
+    this.updateNodes(graph);
   }
  
   render() {
       return (
-          <Panel title={"Epoch: " + this.state.step} height="700" ref={container => this.container = container}></Panel>
+          <Panel title={"Epoch: " + this.state.step} height={this.height} ref={container => this.container = container}></Panel>
       )
   }
 }

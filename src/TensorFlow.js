@@ -45,6 +45,7 @@ export default class TensorFlow {
     }
 
     buildModel(inputSize) {
+        //chain layers
         const optimizer = tf.train[this.config.optimizer](this.config.learningRate);
         const input = tf.input({shape: [inputSize,]});
 
@@ -82,17 +83,20 @@ export default class TensorFlow {
             batchSize: 30,
             callbacks: {
                 onEpochEnd: async (epoch, logs) => {
+                    //stop training process if needed
                     if (this.model.needToStop) {
                         this.model.stopTraining = true;
                         this.model.isTraining = false;
                         this.model.needToStop = false;
                         this.onStop();
                     } else {
+                        //update visualization
                         updateFn.call(null, epoch, this.model.layers);
                         await tf.nextFrame();
                     }
                 }
             }}).then((training) => {
+                //training process is finished
                 if (training.epoch.length >= this.config.numberOfEpochs) {
                     completeFn.call();
                 }

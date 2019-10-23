@@ -41,10 +41,10 @@ export default class Preprocessor {
 
 
     getMatchResult(item) {
-        return (item.home_team_goals > item.away_team_goals) ? 1 : 
-            (item.home_team_goals < item.away_team_goals) ? -1 :
-            (item.win_conditions.trim() == "") ? 0 : 
-            (item.win_conditions.substring(item.home_team_name) > -1) ? 1 : -1;
+        return (item.home_team_goals > item.away_team_goals) ? 1 : 		         
+	            (item.home_team_goals < item.away_team_goals) ? -1 :		           
+	            (item.win_conditions.trim() == "") ? 0 : 		             
+	            (item.win_conditions.substring(item.home_team_name) > -1) ? 1 : -1;
     }
 
     getStageIndex(stage) {
@@ -123,7 +123,8 @@ export default class Preprocessor {
     }
 
     process(data) {
-        let [trainDataOriginal, testDataOriginal, validateDataOriginal] = this.splitData(data, [], [2014]),
+        debugger
+        let [trainDataOriginal, testDataOriginal, validateDataOriginal] = this.splitData(data, [], [2018]),
             trainData = this.collectData(trainDataOriginal, trainDataOriginal),
             testData = this.collectData(testDataOriginal, trainDataOriginal),
             validateData = this.collectData(validateDataOriginal, trainDataOriginal/*.concat(testDataOriginal)*/),
@@ -157,32 +158,33 @@ export default class Preprocessor {
             
             if (((item.team_name == country1) || (this.isParentCountry(item.team_name, country1)))
                  && (item.datetime < date)) {
-                wins_team1 += item.score;
-                wins_team1_minus_wins_team2 += item.score;
+
+                wins_team1 += item.score /** this.getStageIndex(item.stage)*/;
+                wins_team1_minus_wins_team2 += item.score /** this.getStageIndex(item.stage)*/;
                 if ((new DateDiff(date, item.datetime)).years() < 13) {
-                    wins_team1_last_12years += item.score;
-                    wins_team1_minus_wins_team2_last_12years += item.score;
+                    wins_team1_last_12years += item.score /** this.getStageIndex(item.stage)*/;
+                    wins_team1_minus_wins_team2_last_12years += item.score /** this.getStageIndex(item.stage)*/;
                 }
             }
             if (((item.team_name == country2) || (this.isParentCountry(item.team_name, country2)))
                  && (item.datetime < date)) {
-                wins_team2 += item.score;
-                wins_team1_minus_wins_team2 -= item.score;
+                wins_team2 += item.score /** this.getStageIndex(item.stage)*/;
+                wins_team1_minus_wins_team2 -= item.score /** this.getStageIndex(item.stage)*/;
                 if ((new DateDiff(date, item.datetime)).years() < 13) {
-                    wins_team2_last_12years += item.score;
-                    wins_team1_minus_wins_team2_last_12years -= item.score;
+                    wins_team2_last_12years += item.score /** this.getStageIndex(item.stage)*/;
+                    wins_team1_minus_wins_team2_last_12years -= item.score /** this.getStageIndex(item.stage)*/;
                 }
             }
             if (((item.team_name == country1) || (this.isParentCountry(item.team_name, country1)))
                  && ((item.competitor_name == country2) || (this.isParentCountry(item.competitor_name, country2)))
                 && (item.datetime < date)) {
                 
-                wins_team1_against_team2 += item.score;
+                wins_team1_against_team2 += item.score /** this.getStageIndex(item.stage)*/;
                 if ((new DateDiff(date, item.datetime)).years() < 13) {
-                    wins_team1_against_team2_last_12years += item.score;
+                    wins_team1_against_team2_last_12years += item.score /** this.getStageIndex(item.stage)*/;
                 }
                 if (this.getStageIndex(target.stage) == this.getStageIndex(item.stage)) {
-                    wins_team1_against_team2_in_stage += item.score;
+                    wins_team1_against_team2_in_stage += item.score /** this.getStageIndex(item.stage)*/;
                 }
             }
             

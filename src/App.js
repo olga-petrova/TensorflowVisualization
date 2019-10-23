@@ -9,11 +9,21 @@ import DataGrid from './views/DataGrid.js';
 import TestGrid from './views/TestGrid.js';
 import ControlToolbar from './views/Toolbar.js';
 
+import Data from './data_preprocessing/Data.js';
+import preprocessor from './data_preprocessing/DataPreprocessor.js';
+
+Ext.require('Ext.layout.Fit');
+
 
 export default class App extends Component {
 
   constructor(props) {
     super(props);
+    
+    //var processor = new preprocessor(),
+    //test = processor.collectData(Data, Data);
+    //debugger
+
 
     this.updateState = this.updateState.bind(this);
     this.state = {
@@ -83,11 +93,11 @@ export default class App extends Component {
       //"wins_team2":"scaling",
       //"wins_team1_last_12years":"scaling",
       //"wins_team2_last_12years":"scaling",
-      //"wins_team1_minus_wins_team2":"scaling",
+      "wins_team1_minus_wins_team2":"scaling",
       "wins_team1_against_team2":"scaling",
       "wins_team1_minus_wins_team2_last_12years":"scaling",
-      //"wins_team1_against_team2_last_12years":"scaling",
-      //"wins_team1_against_team2_in_stage":"scaling",
+      "wins_team1_against_team2_last_12years":"scaling",
+      "wins_team1_against_team2_in_stage":"scaling",
       "isHomeCountry":"scaling",
       "stage":"scaling",
       //"attendance":"scaling",
@@ -149,6 +159,7 @@ export default class App extends Component {
   refresh() {
     this.vis.clear();
     this.tensorFlow.start(this.state.tensors, this.updateState, this.onModelTrained);
+    this.modelIsReady = false;
   }
 
   restart() {
@@ -165,13 +176,33 @@ export default class App extends Component {
       return (
         <Panel layout="vbox">
           <ControlToolbar config={this.state.config} onChange={this.onConfigChange} onValidate={this.onValidate}></ControlToolbar>
-          <Visualization layers={this.state.layers} epoch={this.state.epoch} columnWidth="280" ref={vis => this.vis = vis}></Visualization>
+          <Visualization 
+            layers={this.state.layers} 
+            epoch={this.state.epoch} 
+            width={window.innerWidth} 
+            height={Math.round(window.innerHeight*0.3)}
+            ref={vis => this.vis = vis} 
+            columnWidth={Math.round(window.innerWidth / (this.state.meta ? this.state.meta.length + 1 : 1))}>
+          </Visualization>
           <TabPanel tabBar={{docked: 'bottom'}} flex="1" ref={tabPanel => this.tabPanel = tabPanel}>
             <Container title="Train Data" layout="fit">
-              <DataGrid fields={this.state.fields} meta={this.state.meta} tensors={this.state.tensors} onFieldsChange={this.onFieldsChange}></DataGrid>
+              <DataGrid 
+                fields={this.state.fields} 
+                meta={this.state.meta} 
+                tensors={this.state.tensors} 
+                onFieldsChange={this.onFieldsChange}
+                columnWidth={Math.round(window.innerWidth / (this.state.meta ? this.state.meta.length + 1 : 1))}>
+              </DataGrid>
             </Container>
             <Container title="Test Data" layout="fit">
-              <TestGrid fields={this.state.fields} meta={this.state.meta} tensors={this.state.tensors} onPredict={this.onPredict} ref={testGrid => this.testGrid = testGrid}></TestGrid>
+              <TestGrid 
+                fields={this.state.fields} 
+                meta={this.state.meta} 
+                tensors={this.state.tensors} 
+                onPredict={this.onPredict} 
+                ref={testGrid => this.testGrid = testGrid}
+                columnWidth={Math.round(window.innerWidth / (this.state.meta ? this.state.meta.length + 1 : 1))}>
+              </TestGrid>
             </Container>
           </TabPanel>
         </Panel>

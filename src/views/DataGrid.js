@@ -6,12 +6,37 @@ export default class DataGrid extends BaseGrid {
 
   constructor(props) {
     super(props);
-
+    this.columnWidth = props.columnWidth;
     this.refreshHeaders = this.refreshHeaders.bind(this);
+    this.applyNormalization = this.applyNormalization.bind(this);
   }
 
   componentWillReceiveProps(props) {
+    this.columnWidth = props.columnWidth;
+    this.meta = props.meta;
     this.update(props.tensors[0], props.fields, props.meta);
+  }
+
+  applyNormalization(grid, column) {
+   let menu = column.getMenu();
+      if (menu) {
+        
+        var metaItem = this.meta.find(function (item) {
+          return (item.feature == column.getDataIndex());
+        });
+        
+        menu.setViewModel({
+          data: {
+            menuGroups: {
+                  normalization: (metaItem) ? metaItem.normalization : 'none'
+              }
+          }
+        });
+        menu.setBind({
+          groups: '{menuGroups}'
+        });
+      }
+    
   }
 
 
@@ -30,7 +55,8 @@ export default class DataGrid extends BaseGrid {
         dataIndex: field,
         hidden: (Ext.isEmpty(metaItem)),
         hideable: (index == (fields.length - 1)) ? false: true,
-        width: 280,
+        width: this.columnWidth,
+        filter: 'number',
         menu:[{
               xtype: 'menuradioitem',
               group: 'normalization',
@@ -99,16 +125,20 @@ export default class DataGrid extends BaseGrid {
         <Grid 
             store={this.store} 
             columns={this.columns} 
+            plugins={{
+                gridfilters: true
+            }}
             border="1" 
             flex="1" 
-            infinite={true}
             maxHeight={500}
             rowHeight={40}
             onColumnHide={this.refreshHeaders} 
             onColumnShow={this.refreshHeaders}
+            onColumnAdd={this.applyNormalization}
             ref={grid => this.grid = grid}
             >
         </Grid>
       )
   }
 }
+
