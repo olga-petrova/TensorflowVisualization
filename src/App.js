@@ -13,6 +13,7 @@ import Data from './data_preprocessing/Data.js';
 import preprocessor from './data_preprocessing/DataPreprocessor.js';
 
 Ext.require('Ext.layout.Fit');
+Ext.require('Ext.grid.filters.Plugin');
 
 
 export default class App extends Component {
