@@ -26,7 +26,7 @@
     "css-loader": "^2.1.0",
     "d3": "^5.7.0",
     "d3-scale": "^2.2.2",
-    "date-and-time": "^0.6.3",
+    "date-and-time": "^0.14.2",
     "date-diff": "^0.2.1",
     "moment": "^2.24.0",
     "simple-statistics": "^7.0.0",
