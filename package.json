@@ -28,7 +28,7 @@
     "d3-scale": "^2.2.2",
     "date-and-time": "^0.6.3",
     "date-diff": "^0.2.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "simple-statistics": "^7.0.0",
     "history": "~4.9.0",
     "prop-types": "~15.7.2",
